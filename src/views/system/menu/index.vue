@@ -99,13 +99,13 @@
           <el-col :span="24">
             <el-form-item label="菜单类型" prop="menuType">
               <el-radio-group v-model="form.menuType">
-                <el-radio label="1">目录</el-radio>
-                <el-radio label="2">菜单</el-radio>
-                <el-radio label="3">按钮</el-radio>
+                <el-radio :label="1">目录</el-radio>
+                <el-radio :label="2">菜单</el-radio>
+                <el-radio :label="3">按钮</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="24" v-if="form.menuType != 'F'">
+          <el-col :span="24" v-if="form.menuType != 3">
             <el-form-item label="菜单图标" prop="icon">
               <el-popover
                 placement="bottom-start"
@@ -115,7 +115,7 @@
                 @show="showSelectIcon"
               >
                 <template #reference>
-                  <el-input v-model="form.icon" placeholder="点击选择图标" @click="showSelectIcon" readonly>
+                  <el-input v-model="form.icon" placeholder="点击选择图标" @click.stop="showSelectIcon" readonly>
                     <template #prefix>
                       <svg-icon
                         v-if="form.icon"
@@ -141,7 +141,7 @@
               <el-input-number v-model="form.orderNum" controls-position="right" :min="0" />
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="form.menuType != '3'">
+          <el-col :span="12" v-if="form.menuType != 3">
             <el-form-item>
               <template #label>
                 <span>
@@ -156,7 +156,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="form.menuType != '3'">
+          <el-col :span="12" v-if="form.menuType != 3">
             <el-form-item prop="path">
               <template #label>
                 <span>
@@ -172,7 +172,7 @@
               <el-input v-model="form.path" placeholder="请输入路由地址" />
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="form.menuType == '2'">
+          <el-col :span="12" v-if="form.menuType == 2">
             <el-form-item prop="component">
               <template #label>
                 <span>
@@ -185,7 +185,7 @@
               <el-input v-model="form.component" placeholder="请输入组件路径" />
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="form.menuType != '1'">
+          <el-col :span="12" v-if="form.menuType != 1">
             <el-form-item>
               <el-input v-model="form.perms" placeholder="请输入权限标识" maxlength="100" />
               <template #label>
@@ -201,7 +201,7 @@
               </template>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="form.menuType == '2'">
+          <el-col :span="12" v-if="form.menuType == 2">
             <el-form-item>
               <el-input v-model="form.query" placeholder="请输入路由参数" maxlength="255" />
               <template #label>
@@ -214,7 +214,7 @@
               </template>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="form.menuType == '2'">
+          <el-col :span="12" v-if="form.menuType == 2">
             <el-form-item>
               <template #label>
                 <span>
@@ -233,7 +233,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="form.menuType != '3'">
+          <el-col :span="12" v-if="form.menuType != 3">
             <el-form-item>
               <template #label>
                 <span>
@@ -248,7 +248,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="12" v-if="form.menuType != '3'">
+          <el-col :span="12" v-if="form.menuType != 3">
             <el-form-item>
               <template #label>
                 <span>
@@ -294,6 +294,7 @@ const isExpandAll = ref(false);
 const refreshTable = ref(true);
 const showChooseIcon = ref(false);
 const iconSelectRef = ref(null);
+const isTrue = true;
 
 const data = reactive({
   form: {},
@@ -343,7 +344,7 @@ function reset() {
     parentId: 0,
     menuName: undefined,
     icon: undefined,
-    menuType: '1',
+    menuType: 1,
     orderNum: undefined,
     isExternal: 0,
     isCache: 0,

@@ -104,25 +104,10 @@ export function updateUserPassword(oldPassword, newPassword) {
 export function uploadAvatar(data) {
   return request({
     url: '/system/user/profile/avatar',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
     method: 'post',
     data,
-  });
-}
-
-// 查询授权角色
-export function getRoleOfUser(userId) {
-  return request({
-    url: `/system/user/${userId}/role/`,
-    method: 'get',
-  });
-}
-
-// 保存授权角色
-export function updateRoleOfUser(data) {
-  const { userId } = data.userId;
-  return request({
-    url: `/system/user/${userId}/role/`,
-    method: 'put',
-    params: data,
   });
 }

@@ -60,6 +60,7 @@
               start-placeholder="开始日期"
               end-placeholder="结束日期"
             ></el-date-picker>
+            <el-input v-show="false"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -148,12 +149,20 @@
             v-if="columns[4].visible"
             width="120"
           />
+          <el-table-column
+            label="角色"
+            align="center"
+            key="roleName"
+            prop="roleName"
+            v-if="columns[5].visible"
+            width="120"
+          />
           <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible">
             <template #default="scope">
               <el-switch
-                v-model="scope.row.status"
-                active-value="1"
-                inactive-value="0"
+                v-model.number="scope.row.status"
+                :active-value="1"
+                :inactive-value="0"
                 @change="handleStatusChange(scope.row)"
               ></el-switch>
             </template>
@@ -190,15 +199,6 @@
                   icon="Key"
                   @click="handleResetPwd(scope.row)"
                   v-hasPermission="['system:user:resetPwd']"
-                ></el-button>
-              </el-tooltip>
-              <el-tooltip content="分配角色" placement="top" v-if="scope.row.userId !== 1">
-                <el-button
-                  link
-                  type="primary"
-                  icon="CircleCheck"
-                  @click="handleAuthRole(scope.row)"
-                  v-hasPermission="['system:user:edit']"
                 ></el-button>
               </el-tooltip>
             </template>
@@ -528,7 +528,7 @@ function handleExport() {
 }
 /** 用户状态修改  */
 function handleStatusChange(row) {
-  const text = row.status === '0' ? '停用' : '启用';
+  const text = row.status === 0 ? '停用' : '启用';
   proxy.$modal
     .confirm(`确认要"${text}""${row.username}"用户吗?`)
     .then(() => userApi.changeUserStatus(row.userId, row.status))
@@ -536,7 +536,7 @@ function handleStatusChange(row) {
       proxy.$modal.msgSuccess(`${text}成功`);
     })
     .catch(() => {
-      row.status = row.status === '0' ? '1' : '0';
+      row.status = row.status === 0 ? 1 : 0;
     });
 }
 /** 更多操作 */
@@ -629,7 +629,7 @@ function reset() {
     phoneNumber: undefined,
     email: undefined,
     sex: undefined,
-    status: '0',
+    status: 0,
     remark: undefined,
     postId: undefined,
     roleId: undefined,
@@ -646,8 +646,8 @@ function handleAdd() {
   reset();
   initTreeData();
   userApi.getUser().then((response) => {
-    postOptions.value = response.posts;
-    roleOptions.value = response.roles;
+    postOptions.value = response.postOptions;
+    roleOptions.value = response.roleOptions;
     open.value = true;
     title.value = '添加用户';
     form.value.password = initPassword.value;
@@ -660,8 +660,8 @@ function handleUpdate(row) {
   const userId = row.userId || ids.value;
   userApi.getUser(userId).then((response) => {
     form.value = response.user;
-    postOptions.value = response.posts;
-    roleOptions.value = response.roles;
+    postOptions.value = response.postOptions;
+    roleOptions.value = response.roleOptions;
     form.value.postId = response.postId;
     form.value.roleId = response.roleId;
     open.value = true;

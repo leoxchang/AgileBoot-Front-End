@@ -33,6 +33,7 @@
           start-placeholder="开始日期"
           end-placeholder="结束日期"
         ></el-date-picker>
+        <el-input v-show="false"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -86,8 +87,8 @@
         <template #default="scope">
           <el-switch
             v-model="scope.row.status"
-            active-value="1"
-            inactive-value="0"
+            :active-value="1"
+            :inactive-value="0"
             @change="handleStatusChange(scope.row)"
           ></el-switch>
         </template>
@@ -287,11 +288,11 @@ const deptRef = ref(null);
 
 /** 数据范围选项 */
 const dataScopeOptions = ref([
-  { value: '1', label: '全部数据权限' },
-  { value: '2', label: '自定数据权限' },
-  { value: '3', label: '本部门数据权限' },
-  { value: '4', label: '本部门及以下数据权限' },
-  { value: '5', label: '仅本人数据权限' },
+  { value: 1, label: '全部数据权限' },
+  { value: 2, label: '自定数据权限' },
+  { value: 3, label: '本部门数据权限' },
+  { value: 4, label: '本部门及以下数据权限' },
+  { value: 5, label: '仅本人数据权限' },
 ]);
 
 const data = reactive({
@@ -366,7 +367,7 @@ function handleSelectionChange(selection) {
 }
 /** 角色状态修改 */
 function handleStatusChange(row) {
-  const text = row.status === '1' ? '启用' : '停用';
+  const text = row.status === 1 ? '启用' : '停用';
   proxy.$modal
     .confirm(`确认要"${text}""${row.roleName}"角色吗?`)
     .then(() => roleApi.changeRoleStatus(row.roleId, row.status))
@@ -374,7 +375,7 @@ function handleStatusChange(row) {
       proxy.$modal.msgSuccess(`${text}成功`);
     })
     .catch(() => {
-      row.status = row.status === '0' ? '1' : '0';
+      row.status = row.status === 0 ? 1 : 0;
     });
 }
 /** 更多操作 */
@@ -423,7 +424,7 @@ function reset() {
     roleName: undefined,
     roleKey: undefined,
     roleSort: 0,
-    status: '0',
+    status: 0,
     menuIds: [],
     deptIds: [],
     menuCheckStrictly: true,

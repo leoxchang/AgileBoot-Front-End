@@ -1,6 +1,6 @@
 {
   "name": "agileboot",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "AgileBoot管理系统",
   "author": "valarchie",
   "license": "MIT",
@@ -20,7 +20,7 @@
     "@vueuse/core": "^9.3.0",
     "axios": "0.26.1",
     "echarts": "5.3.2",
-    "element-plus": "2.2.20",
+    "element-plus": "2.2.29",
     "file-saver": "2.0.5",
     "fuse.js": "6.5.3",
     "js-cookie": "3.0.1",
